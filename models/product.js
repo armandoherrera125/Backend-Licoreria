@@ -10,23 +10,23 @@ const Product = sequelize.define( 'Product', {
     name: {
         type: DataTypes.STRING,
         allowNull: false,
+    },
+    price: {
+        type: DataTypes.DECIMAL,
+        allowNull: false,
+    },
+    bodega: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    estante: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+    total: {
+        type: DataTypes.INTEGER,
+        allowNull: false
     }
-    // ,
-    // price: {
-    //     type: DataTypes.DECIMAL,
-    //     allowNull: false,
-
-    // },
-    // quantity: {
-    //     type: DataTypes.INTEGER,
-    //     allowNull: true,
-    //     defaultValue:0
-    // },
-    // state: {
-    //     type: DataTypes.TINYINT,
-    //     allowNull: true,
-    //     defaultValue: 1
-    // },
 });
 module.exports = {
     Product

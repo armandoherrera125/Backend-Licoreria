@@ -1,57 +1,67 @@
 const { request, response } = require("express");
+const { getAmountOfProducts } = require("../helpers/CountProducts");
 //const { getAmountOfProducts } = require("../helpers/CountProducts");
 const {Product} = require('../models/product');
 const productsGet = async( req = request, res = response ) => {
-    const products = await Product.findAll();
-    //const algo = await getAmountOfProducts();
-    //console.log(typeof algo);
-    //console.log(products);
-    res.status(200).json(
+    const products = await Product.findAll({
+        order: [
+            ['name', 'ASC']
+        ],
+    });
+    return res.status(200).json(
         {
-            msg:'Working on products',
             products
         }
     );
 }
-// const productCreate = async( req = request, res = response ) => {
-//     const { name, price } = req.body;
-//     const amountOfProducts = await getAmountOfProducts();
-//     const id = amountOfProducts + 1;
-//     try {
-//         const creatingProduct = await Product.create({
-//             id,
-//             name,
-//             price
-//         });
-//         res.status(201).json({
-//             msg: 'Product created successfully',
-//             creatingProduct
-//         })
-//     } catch (error) {
-//         res.status(403).json({ error });
-//     }
-// };
-// const productEdit = async( req = request, res = response ) => {
-//     const {id} = req.params;
-//     const { name, price } = req.body;
-//     try {
-//         const editingProduct = await Product.update({
-//             name,
-//             price
-//         },{
-//             where:{
-//                 id
-//             }
-//         }
-//         );
-//         res.status(201).json({
-//             msg: 'Product updated successfully',
-//             editingProduct
-//         })
-//     } catch (error) {
-//         res.status(403).json({ error });
-//     }
-// };
+const productCreate = async( req = request, res = response ) => {
+    let { name, price,bodega,estante } = req.body;
+    price = parseFloat(price);
+    const amountOfProducts = await getAmountOfProducts();
+    const id = amountOfProducts + 1;
+    const total = Number(bodega) + Number(estante);
+    try {
+        const creatingProduct = await Product.create({
+            id,
+            name,
+            price,
+            bodega,
+            estante,
+            total 
+        });
+        res.status(201).json({
+            msg: 'Product created successfully',
+            creatingProduct
+        })
+    } catch (error) {
+        res.status(403).json({ error });
+    }
+};
+const productEdit = async( req = request, res = response ) => {
+    const {id} = req.params;
+    const { name, price,bodega,estante } = req.body;
+    const total = Number(bodega) + Number(estante);
+    try {
+        const editingProduct = await Product.update({
+            name,
+            price,
+            bodega,
+            estante,
+            total
+        },{
+            where:{
+                id
+            }
+        }
+        );
+        res.status(201).json({
+            msg: 'Product updated successfully',
+            editingProduct
+        })
+    } catch (error) {
+        res.status(403).json({ error });
+    }
+};
 // const productDelete = async( req = request, res = response ) => {
 //     const { id } = req.params;
 //     try {
@@ -72,7 +82,7 @@ const productsGet = async( req = request, res = response ) => {
 // };
 module.exports = {
     productsGet,
-    // productCreate,
-    // productEdit,
+    productCreate,
+    productEdit,
     // productDelete
 }

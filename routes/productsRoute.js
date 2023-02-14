@@ -3,7 +3,7 @@ const { productsGet, productCreate, productEdit, productDelete } = require("../c
 
 const router = Router();
 router.get( '/', productsGet );
-// router.post('/', productCreate);
-// router.put('/:id', productEdit);
+router.post('/', productCreate);
+router.put('/:id', productEdit);
 // router.delete('/:id', productDelete);
 module.exports = router;
